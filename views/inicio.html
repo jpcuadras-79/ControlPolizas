@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<section class="tarjetas">
+    <div class="tarjeta vigentes">
+        <h3>Vigentes</h3>
+        <p class="numero">{{ conteo.get('Vigente', 0) }}</p>
+    </div>
+    <div class="tarjeta por-vencer">
+        <h3>Por vencer</h3>
+        <p class="numero">{{ conteo.get('Por vencer', 0) }}</p>
+    </div>
+    <div class="tarjeta vencidas">
+        <h3>Vencidas</h3>
+        <p class="numero">{{ conteo.get('Vencida', 0) }}</p>
+    </div>
+</section>
+
+<section class="acciones">
+    <a href="{{ url_for('polizas.descargar_avisos') }}" class="boton descargar">
+        Descargar todos los avisos (.zip)
+    </a>
+</section>
+
+<section class="panel primas">
+    <h2>Primas por aseguradora</h2>
+    <ul class="lista-primas">
+        {% for aseguradora, suma in primas.items() %}
+        <li>
+            <span class="nombre-aseguradora">{{ aseguradora }}</span>
+            <span class="monto-prima">{{ suma|monto }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section class="panel inconsistencias">
+    <h2>Inconsistencias</h2>
+    {% if inconsistencias %}
+    <ul class="lista-inconsistencias">
+        {% for inc in inconsistencias %}
+        <li>{{ inc }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No hay inconsistencias.</p>
+    {% endif %}
+</section>
+
+<section class="tabla-polizas">
+    <h2>Pólizas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Póliza</th>
+                <th>Asegurado</th>
+                <th>Cédula</th>
+                <th>Aseguradora</th>
+                <th>Ramo</th>
+                <th>Vence</th>
+                <th>Días</th>
+                <th>Prima anual</th>
+                <th>Estado</th>
+                <th>Aviso</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in resultados %}
+            <tr class="fila-{{ r.estado|lower }}">
+                <td>{{ r.numero }}</td>
+                <td>{{ r.nombre }}</td>
+                <td>{{ r.cedula }}</td>
+                <td>{{ r.aseguradora }}</td>
+                <td>{{ r.ramo }}</td>
+                <td>{{ r.hasta|fecha }}</td>
+                <td>{{ r.dias_hasta_vencer if r.dias_hasta_vencer is not none else '—' }}</td>
+                <td>{{ r.prima|monto }}</td>
+                <td class="estado {{ r.estado|lower }}">{{ r.estado }}</td>
+                <td>
+                    {% if r.en_maestro == false %}
+                    <span class="etiqueta-problema">no está en el maestro</span>
+                    {% endif %}
+                    {% if r.prima is none %}
+                    <span class="etiqueta-problema">sin prima</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if r.estado in ('Por vencer', 'Vencida') %}
+                    <a href="{{ url_for('polizas.aviso', numero=r.numero) }}" target="_blank" class="enlace-aviso">Ver aviso</a>
+                    {% else %}
+                    —
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}
