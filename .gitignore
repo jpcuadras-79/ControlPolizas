@@ -1,0 +1,21 @@
+# Entornos virtuales
+.venv/
+venv/
+env/
+
+# Cache de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Configuración local de uv
+.python-version
+
+# Archivos temporales de prueba
+prueba_laura.pdf
+
+# Instalador de Windows del proyecto (no subir al repo)
+iniciar_app.bat
+
+# macOS
+.DS_Store
