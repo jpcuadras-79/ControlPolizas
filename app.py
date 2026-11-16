@@ -11,6 +11,9 @@ app = Flask(
     static_url_path="/static",
 )
 
+# Clave secreta necesaria para usar sesiones de Flask (guardar el Excel importado)
+app.secret_key = "control-polizas-clave-secreta-desarrollo"
+
 app.register_blueprint(bp)
 
 

@@ -27,13 +27,17 @@ def estado_poliza(hasta, fecha_corte=FECHA_CORTE):
     return "Vigente"
 
 
-def calcular_resultados(fecha_corte=FECHA_CORTE):
+def calcular_resultados(clientes_df=None, fecha_corte=FECHA_CORTE):
     """Cruza cada póliza con el maestro por cédula.
 
+    Variables:
+        clientes_df: DataFrame opcional con clientes (si es None se carga de data/).
+        fecha_corte: fecha de referencia para calcular estados.
     Añade a cada diccionario: correo, en_maestro, dias_hasta_vencer y estado.
     Devuelve lista ordenada de menos a más días (lo urgente primero).
     """
-    clientes_df = cargar_clientes()
+    if clientes_df is None:
+        clientes_df = cargar_clientes()
     clientes_por_cedula = {}
     for _, fila in clientes_df.iterrows():
         clientes_por_cedula[fila["Cedula"]] = {
@@ -89,16 +93,20 @@ def primas_por_aseguradora(resultados):
     return dict(sorted(primas.items(), key=lambda item: item[1], reverse=True))
 
 
-def buscar_inconsistencias(resultados):
+def buscar_inconsistencias(resultados, clientes_df=None):
     """Devuelve lista de textos con los 3 tipos de problema de AGENTS.md.
 
+    Variables:
+        resultados: lista de diccionarios de pólizas procesadas.
+        clientes_df: DataFrame opcional con clientes (si es None se carga de data/).
     1. Cliente del maestro sin ninguna póliza.
     2. Póliza cuya cédula no está en el maestro.
     3. Póliza sin prima o con fecha ilegible.
     """
     inconsistencias = []
 
-    clientes_df = cargar_clientes()
+    if clientes_df is None:
+        clientes_df = cargar_clientes()
     cedulas_con_poliza = set()
     for r in resultados:
         if r["en_maestro"] and r["cedula"]:

@@ -17,6 +17,22 @@
 </section>
 
 <section class="acciones">
+    <!-- Mensajes flash (éxito o error de la importación) -->
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% if mensajes %}
+            <div class="flash-mensajes">
+                {% for categoria, mensaje in mensajes %}
+                    <div class="flash {{ categoria }}">{{ mensaje }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('polizas.importar_clientes') }}" method="post" enctype="multipart/form-data" class="form-importar">
+        <input type="file" name="archivo" accept=".xlsx,.xls" required>
+        <button type="submit" class="boton importar">Importar maestro de clientes (.xlsx)</button>
+    </form>
+
     <a href="{{ url_for('polizas.descargar_avisos') }}" class="boton descargar">
         Descargar todos los avisos (.zip)
     </a>

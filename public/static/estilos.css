@@ -235,6 +235,64 @@ table tr:nth-child(even) {
     text-decoration: underline;
 }
 
+/* Botón importar y formulario */
+.form-importar {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.form-importar input[type="file"] {
+    padding: 0.75rem 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #ffffff;
+    color: #201E1D;
+}
+
+.form-importar .boton.importar {
+    background-color: #201E1D;
+}
+
+.form-importar .boton.importar:hover {
+    background-color: #1a1817;
+}
+
+/* Mensajes flash */
+.flash-mensajes {
+    margin-bottom: 1rem;
+}
+
+.flash {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.flash.exito {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid #81C784;
+}
+
+.flash.error {
+    background-color: #FFEBEE;
+    color: #AE1800;
+    border: 1px solid #E57373;
+}
+
+/* Ajuste: acciones en fila */
+.acciones {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
 /* Pie de página */
 .pie {
     background-color: #F3F2F2;

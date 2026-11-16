@@ -55,6 +55,19 @@ def cargar_clientes():
     return df
 
 
+def cargar_clientes_desde_archivo(archivo):
+    """Lee un archivo Excel subido (en memoria) y devuelve el DataFrame con Cedula como texto sin espacios.
+
+    Variables:
+        archivo: objeto de archivo subido por Flask (FileStorage o similar).
+    Retorna:
+        pandas.DataFrame con la columna Cedula limpia.
+    """
+    df = pd.read_excel(archivo, sheet_name="Clientes")
+    df["Cedula"] = df["Cedula"].astype(str).str.strip()
+    return df
+
+
 def leer_poliza(ruta_pdf):
     """Abre un PDF de póliza con pdfplumber y devuelve un diccionario con sus datos.
 
